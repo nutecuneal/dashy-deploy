@@ -3,8 +3,9 @@ version: "3.8"
 services:
   dashy:
     image: lissy93/dashy:2.1.1
-    container_name: Dashy
-    # - /root/my-config.yml:/app/public/conf.yml
+    container_name: dashy-server
+    volumes:
+      - /hostPath/conf.yml:/app/public/conf.yml
     ports:
       - 4000:80
     environment:
