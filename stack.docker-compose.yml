@@ -3,22 +3,29 @@ version: '3.9'
 services:
   dashy:
     image: lissy93/dashy:2.1.1
-    container_name: dashy-app
     volumes:
       - $(pwd)/conf.yml:/app/public/conf.yml
-    ports:
-      - '80:80'
     networks:
       - dashy-net
     environment:
       - NODE_ENV=production
-    restart: unless-stopped
     healthcheck:
       test: [ 'CMD', 'node', '/app/services/healthcheck' ]
       interval: 30s
       timeout: 15s
       retries: 3
       start_period: 10s
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 10s
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 256M
 
 networks:
   dashy-net:
